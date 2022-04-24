@@ -1,3 +1,36 @@
+use clap::Parser;
+use urlshortener::{client::UrlShortener, providers::Provider};
+
+const API_KEY: &str = "69a0810a0915222f1bf6fe164c832a851a1560bd";
+
+/// Simple program to shorten given URL
+#[derive(Parser, Debug)]
+#[clap(author, version, about, long_about = None)]
+struct Args {
+    /// URL to be shorten
+    #[clap(short, long)]
+    url: String,
+}
+
 fn main() {
-    println!("Hello, world!");
+    let args = Args::parse();
+
+    let us = UrlShortener::new().unwrap();
+    let long_url = args.url;
+
+    match us.generate(
+        long_url,
+        &Provider::BitLy {
+            token: API_KEY.to_string(),
+        },
+    ) {
+        Ok(res) => {
+            if res == *"INVALID_URI" {
+                println!("Invalid URL!");
+            } else {
+                println!("Shorten URL: {}", res.trim());
+            }
+        }
+        Err(e) => println!("Error: {:?}", e),
+    }
 }

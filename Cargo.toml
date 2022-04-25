@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 urlshortener = "3.0.0"
+cli-clipboard = "0.2.1"
 clap = { version = "3.1.12", features = ["derive"] }
